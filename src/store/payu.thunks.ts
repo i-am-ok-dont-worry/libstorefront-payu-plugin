@@ -18,7 +18,7 @@ export namespace PayuThunks {
                 if (response.result && response.result.hasOwnProperty('url')) { dotpay = response.result; }
             }
 
-            StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('LAST_DOTPAY_PAYMENT', dotpay);
+            StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', dotpay);
             dispatch(PayuActions.setPayuForm(dotpay.data));
             dispatch(PayuActions.setPayuUrl(dotpay.url));
             return dotpay;

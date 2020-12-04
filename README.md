@@ -1,13 +1,30 @@
-## Write plugin
-Entry point for plugin should be `src/index.ts` file. LSF plugin is a default void function 
-that accepts initialized Libstorefront instance.
 
-Plugin has access to all lsf functionality including IOC container. Dependencies
-can be rebound according to plugin needs.
+![Payu](https://poland.payu.com/wp-content/uploads/sites/14/2020/06/PAYU_LOGO_LIME_photo.jpg)
+## LSF Payu Plugin
+This plugin provides support for PayU one click payments.
+PayU plugin appends new state branch to the LSF redux store:
+```js
+{
+    ...
+    payu: {
+        form: PayuForm,
+        url: string,
+        status: PayuStatus
+    }   
+}
+```
 
-## Build plugin
-Run `npm run build` to build plugin.
-Output can be found in `/dist` catalog.
+## PayU service
+PayU service exposes methods for handling payu payment:
+```js
+getPayuPaymentForm (orderId: string): Promise<PayuResponse>
+getPayuPaymentStatus (orderId: string): Promise<PayuStatus>
+sendPayuForm (): Promise<Task>
+```
+
+## Local storage
+PayU plugin stores last successfully fetched payment form object
+in key `last_payu_payment`
 
 ## Test plugin
 Plugin must be tested in isolation. Unit tests can be performed via jest framework
