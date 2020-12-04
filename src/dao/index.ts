@@ -7,7 +7,7 @@ import { buildPayuPostBody } from '../utils';
 export class PayuDao {
     public getPayuForm (orderId: string): Promise<Task> {
         return this.taskQueue.execute({
-            url: URLTransform.getAbsoluteApiUrl('/api/vendor/dotpay/form/' + orderId),
+            url: URLTransform.getAbsoluteApiUrl('/api/vendor/payu/url' + orderId),
             payload: {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
@@ -19,7 +19,7 @@ export class PayuDao {
 
     public getPayuPaymentStatus (orderId: string): Promise<Task> {
         return this.taskQueue.execute({
-            url: URLTransform.getAbsoluteApiUrl('/api/vendor/dotpay/status/' + orderId),
+            url: URLTransform.getAbsoluteApiUrl('/api/vendor/payu/status/' + orderId),
             payload: {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
