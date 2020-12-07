@@ -5,7 +5,7 @@ import { Task, TaskQueue, URLTransform } from '@grupakmk/libstorefront';
 export class PayuDao {
     public getPayuUrl (orderId: string): Promise<Task> {
         return this.taskQueue.execute({
-            url: URLTransform.getAbsoluteApiUrl('/api/vendor/payu/url' + orderId),
+            url: URLTransform.getAbsoluteApiUrl('/api/vendor/payu/url/' + orderId),
             payload: {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },

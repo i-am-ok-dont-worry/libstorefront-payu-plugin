@@ -150,7 +150,7 @@ var PayuDao = /** @class */ (function () {
     }
     PayuDao.prototype.getPayuUrl = function (orderId) {
         return this.taskQueue.execute({
-            url: libstorefront_1.URLTransform.getAbsoluteApiUrl('/api/vendor/payu/url' + orderId),
+            url: libstorefront_1.URLTransform.getAbsoluteApiUrl('/api/vendor/payu/url/' + orderId),
             payload: {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
