@@ -11,6 +11,9 @@ export const payuReducer: Reducer<PayuModuleState, AnyAction> = (state = PayuDef
         case PayuActions.SET_PAYU_URL: {
             return { ...state, url: action.payload };
         }
+        case PayuActions.SET_PAYU_ORDER_NUMBER: {
+            return { ...state, orderNumber: action.payload };
+        }
         default: return state || PayuDefaultState;
     }
 };

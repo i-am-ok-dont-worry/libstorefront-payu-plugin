@@ -16,13 +16,16 @@ export namespace PayuThunks {
     export const getPayuUrl = (orderId: string) => async (dispatch, getState) => {
         try {
             const response = await IOCContainer.get(PayuDao).getPayuUrl(orderId);
+            const lastOrderId = await IOCContainer.get(AbstractStore).getState().order.last_order_confirmation.confirmation.orderNumber;
 
             if (typeof response.result === 'string') {
                 const url = response.result;
-                StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', { url, status: PayuStatus.NOT_EXISTS });
-                dispatch(PayuActions.setPayuUrl(url));
-                dispatch(PayuActions.setPayuStatus(PayuStatus.NOT_EXISTS));
-                return { url, status: PayuStatus.NOT_EXISTS };
+                await dispatch(PayuActions.setPayuUrl(url));
+                await dispatch(PayuActions.setPayuStatus(PayuStatus.NOT_EXISTS));
+                await dispatch(PayuActions.setDotpayOrderNumber(lastOrderId));
+                await StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', getState().payu);
+
+                return getState().payu;
             }
         } catch (e) {
             return null;
@@ -60,6 +63,7 @@ export namespace PayuThunks {
             if (!lastPayuPayment) { return; }
             dispatch(PayuActions.setPayuUrl(lastPayuPayment.url));
             dispatch(PayuActions.setPayuStatus(lastPayuPayment.status));
+            dispatch(PayuActions.setDotpayOrderNumber(lastPayuPayment.orderNumber));
         } catch (e) {}
     }
 }

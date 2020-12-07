@@ -14,4 +14,10 @@ export namespace PayuActions {
         type: SET_PAYU_STATUS,
         payload: status
     });
+
+    export const SET_PAYU_ORDER_NUMBER = SN_PAYU + '/SET_ORDER_NUMBER';
+    export const setDotpayOrderNumber = (orderNumber: string) => ({
+        type: SET_PAYU_ORDER_NUMBER,
+        payload: orderNumber
+    });
 }
