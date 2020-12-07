@@ -28,6 +28,7 @@ export namespace PayuThunks {
                 return getState().payu;
             }
         } catch (e) {
+            dispatch(PayuActions.setPayuStatus(PayuStatus.ERROR));
             return null;
         }
     };
@@ -40,6 +41,7 @@ export namespace PayuThunks {
             return response.result as PayuStatus;
         } catch (e) {
             console.warn('Error while fetching status: ', e);
+            dispatch(PayuActions.setPayuStatus(PayuStatus.ERROR));
             return null;
         }
     };

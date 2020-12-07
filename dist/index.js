@@ -474,6 +474,7 @@ var PayuThunks;
                 case 7: return [3 /*break*/, 9];
                 case 8:
                     e_1 = _a.sent();
+                    dispatch(payu_actions_1.PayuActions.setPayuStatus(types_1.PayuStatus.ERROR));
                     return [2 /*return*/, null];
                 case 9: return [2 /*return*/];
             }
@@ -496,6 +497,7 @@ var PayuThunks;
                 case 3:
                     e_2 = _a.sent();
                     console.warn('Error while fetching status: ', e_2);
+                    dispatch(payu_actions_1.PayuActions.setPayuStatus(types_1.PayuStatus.ERROR));
                     return [2 /*return*/, null];
                 case 4: return [2 /*return*/];
             }
