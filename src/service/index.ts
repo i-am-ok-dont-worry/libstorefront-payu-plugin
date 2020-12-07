@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { AbstractStore, LibstorefrontInnerState, Task } from '@grupakmk/libstorefront';
+import {AbstractStore, LibstorefrontInnerState, PaymentMethod, Task} from '@grupakmk/libstorefront';
 import { PayuThunks } from '../store/payu.thunks';
 import { PayuResponse, PayuStatus } from '../types';
 
@@ -39,5 +39,14 @@ export class PayuService {
      */
     public loadLastTransactionFromCache (): Promise<void> {
         return this.store.dispatch(PayuThunks.loadLastPayuTransaction());
+    }
+
+    /**
+     * Returns true if payment method can be handled by this plugin
+     * @param {PaymentMethod} paymentMethod
+     * @returns {boolean}
+     */
+    public canHandleMethod (paymentMethod: PaymentMethod): boolean {
+        return ['payu_gateway'].includes(paymentMethod.code);
     }
 }
