@@ -1,31 +1,33 @@
 import { PayuDao } from '../dao';
 import { PayuActions } from './payu.actions';
-import { AbstractStore, IOCContainer, LibstorefrontInnerState } from '@grupakmk/libstorefront';
-import { StorageManager, StorageCollection } from '@grupakmk/libstorefront';
-import { PayuResponse, PayuStatus } from '../types';
+import {
+    AbstractStore,
+    ConnectionState,
+    IOCContainer,
+    Logger,
+    StorageCollection,
+    StorageManager
+} from '@grupakmk/libstorefront';
+import { PayuStatus } from '../types';
 import { PayuModuleState } from './payu.default';
 
 export namespace PayuThunks {
     // @ts-ignore
-    export const getPayuForm = (orderId: string) => async (dispatch, getState) => {
+    export const getPayuUrl = (orderId: string) => async (dispatch, getState) => {
         try {
-            const response = await IOCContainer.get(PayuDao).getPayuForm(orderId);
-            let dotpay: PayuResponse;
-            if (response.result instanceof Array) {
-                const [data] = response.result;
-                if (data && data.hasOwnProperty('url')) { dotpay = data; }
-            } else {
-                if (response.result && response.result.hasOwnProperty('url')) { dotpay = response.result; }
-            }
+            const response = await IOCContainer.get(PayuDao).getPayuUrl(orderId);
 
-            StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', dotpay);
-            dispatch(PayuActions.setPayuForm(dotpay.data));
-            dispatch(PayuActions.setPayuUrl(dotpay.url));
-            return dotpay;
+            if (typeof response.result === 'string') {
+                const url = response.result;
+                StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', { url, status: PayuStatus.NOT_EXISTS });
+                dispatch(PayuActions.setPayuUrl(url));
+                dispatch(PayuActions.setPayuStatus(PayuStatus.NOT_EXISTS));
+                return { url, status: PayuStatus.NOT_EXISTS };
+            }
         } catch (e) {
             return null;
         }
-    }
+    };
 
     // @ts-ignore
     export const getPayuStatus = (orderId: string) => async (dispatch, getState) => {
@@ -37,24 +39,27 @@ export namespace PayuThunks {
             console.warn('Error while fetching status: ', e);
             return null;
         }
-    }
+    };
 
-    export const sendPayuForm = () => async (dispatch, getState) => {
-        const orderNumber = (IOCContainer.get(AbstractStore).getState() as LibstorefrontInnerState).order.last_order_confirmation.confirmation.orderNumber;
-        const trackStatus = (orderNumber) => {
-            const interval = setInterval(async () => {
-                const status = await dispatch(getPayuStatus(orderNumber));
-                if (status === PayuStatus.SUCCESS) { clearInterval(interval); }
-            }, 5000);
-        };
-
+    export const redirectToPaymentViaUrl = () => async (dispatch, getState) => {
         try {
-            const dotpay = IOCContainer.get(AbstractStore).getState().dotpay as PayuModuleState;
-            const { form, url } = dotpay;
-            await IOCContainer.get(PayuDao).sendPayuInformationForm(url, form);
-            trackStatus(orderNumber);
+            if (ConnectionState.isServer()) { throw new Error(`Cannot use payu plugin on server`); }
+
+            dispatch(PayuActions.setPayuStatus(PayuStatus.PENDING));
+            const payu = (IOCContainer.get(AbstractStore).getState().payu as PayuModuleState);
+            window.location.href = payu.url;
         } catch (e) {
-            trackStatus(orderNumber);
+            Logger.warn(`PayU error: `, e);
+            dispatch(PayuActions.setPayuStatus(PayuStatus.ERROR));
         }
+    };
+
+    export const loadLastPayuTransaction = () => async (dispatch, getState) => {
+        try {
+            const lastPayuPayment: PayuModuleState = await StorageManager.getInstance().get(StorageCollection.ORDERS).getItem('last_payu_payment');
+            if (!lastPayuPayment) { return; }
+            dispatch(PayuActions.setPayuUrl(lastPayuPayment.url));
+            dispatch(PayuActions.setPayuStatus(lastPayuPayment.status));
+        } catch (e) {}
     }
 }

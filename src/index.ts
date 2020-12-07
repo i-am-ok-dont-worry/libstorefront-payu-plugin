@@ -13,4 +13,5 @@ export const PayuPaymentPlugin = ((libstorefront: LibStorefront) => {
     libstorefront.listenTo(HookType.AfterCoreModulesRegistered, (lsf: LibStorefront) => {
        lsf.registerModule(createLibstorefrontModule('payu', payuReducer, PayuDefaultState));
     });
+    libstorefront.listenTo(HookType.AfterInit, () => libstorefront.getIOCContainer().get(PayuService).loadLastTransactionFromCache());
 });

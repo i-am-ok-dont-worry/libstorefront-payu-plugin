@@ -5,9 +5,6 @@ import { PayuActions } from './payu.actions';
 
 export const payuReducer: Reducer<PayuModuleState, AnyAction> = (state = PayuDefaultState, action) => {
     switch (action.type) {
-        case PayuActions.SET_PAYU_FORM: {
-            return { ...state, form: action.payload };
-        }
         case PayuActions.SET_PAYU_STATUS: {
             return { ...state, status: action.payload };
         }

@@ -14,8 +14,8 @@ export class PayuService {
      * @param {number} orderId
      * @returns {Promise<PayuResponse>} PayU form object
      */
-    public getPayuPaymentForm (orderId: string): Promise<PayuResponse> {
-        return this.store.dispatch(PayuThunks.getPayuForm(orderId));
+    public getPayuPaymentUrl (orderId: string): Promise<PayuResponse> {
+        return this.store.dispatch(PayuThunks.getPayuUrl(orderId));
     }
 
     /**
@@ -28,9 +28,16 @@ export class PayuService {
     }
 
     /**
-     * Sends parsed dotpay form
+     * Redirects to PayU payment
      */
-    public sendPayuForm (): Promise<Task> {
-        return this.store.dispatch(PayuThunks.sendPayuForm());
+    public redirectToPaymentViaUrl (): Promise<Task> {
+        return this.store.dispatch(PayuThunks.redirectToPaymentViaUrl());
+    }
+
+    /**
+     * Loads last PayU transaction from cache into the redux store
+     */
+    public loadLastTransactionFromCache (): Promise<void> {
+        return this.store.dispatch(PayuThunks.loadLastPayuTransaction());
     }
 }
