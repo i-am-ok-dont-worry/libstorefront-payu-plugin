@@ -47,6 +47,6 @@ export class PayuService {
      * @returns {boolean}
      */
     public canHandleMethod (paymentMethod: PaymentMethod): boolean {
-        return ['dotpay_other', 'dotpay_widget'].includes(paymentMethod.code);
+        return ['payu_gateway'].includes(paymentMethod.code);
     }
 }
