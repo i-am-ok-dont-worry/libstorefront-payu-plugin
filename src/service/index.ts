@@ -14,7 +14,7 @@ export class PayuService {
      * @param {number} orderId
      * @returns {Promise<PayuResponse>} PayU form object
      */
-    public getPayuPaymentUrl (orderId: string): Promise<PayuResponse> {
+    public preparePayment (orderId: string): Promise<PayuResponse> {
         return this.store.dispatch(PayuThunks.getPayuUrl(orderId));
     }
 
@@ -23,7 +23,7 @@ export class PayuService {
      * @param {string} orderId
      * @returns {Promise<PayuStatus>} Payment status
      */
-    public getPayuPaymentStatus (orderId: string): Promise<PayuStatus> {
+    public getPaymentStatus (orderId: string): Promise<PayuStatus> {
         return this.store.dispatch(PayuThunks.getPayuStatus(orderId));
     }
 
