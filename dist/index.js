@@ -453,7 +453,7 @@ var PayuThunks;
                     return [4 /*yield*/, libstorefront_1.IOCContainer.get(dao_1.PayuDao).getPayuUrl(orderId)];
                 case 1:
                     response = _a.sent();
-                    return [4 /*yield*/, libstorefront_1.IOCContainer.get(libstorefront_1.AbstractStore).getState().order.last_order_confirmation.confirmation.magentoOrderId];
+                    return [4 /*yield*/, libstorefront_1.IOCContainer.get(libstorefront_1.AbstractStore).getState().order.last_order_confirmation.confirmation.orderNumber];
                 case 2:
                     lastOrderId = _a.sent();
                     if (!(typeof response.result === 'string')) return [3 /*break*/, 7];
