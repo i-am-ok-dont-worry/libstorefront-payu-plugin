@@ -274,7 +274,7 @@ var PayuService = /** @class */ (function () {
      * @returns {boolean}
      */
     PayuService.prototype.canHandleMethod = function (paymentMethod) {
-        return ['payu_gateway'].includes(paymentMethod.code);
+        return ['payu_gateway', 'payu_gateway_card'].includes(paymentMethod.code);
     };
     __decorate([
         inversify_1.inject(libstorefront_1.AbstractStore),
@@ -562,7 +562,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PayuStatus = void 0;
 var PayuStatus;
 (function (PayuStatus) {
-    PayuStatus[PayuStatus["NOT_EXISTS"] = 1] = "NOT_EXISTS";
+    PayuStatus[PayuStatus["NOT_EXISTS"] = -1] = "NOT_EXISTS";
     PayuStatus[PayuStatus["ERROR"] = 0] = "ERROR";
     PayuStatus[PayuStatus["PENDING"] = 1] = "PENDING";
     PayuStatus[PayuStatus["SUCCESS"] = 2] = "SUCCESS";
