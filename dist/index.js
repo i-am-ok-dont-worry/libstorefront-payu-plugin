@@ -461,7 +461,7 @@ var PayuThunks;
                     return [4 /*yield*/, dispatch(payu_actions_1.PayuActions.setPayuUrl(url))];
                 case 3:
                     _a.sent();
-                    return [4 /*yield*/, dispatch(payu_actions_1.PayuActions.setPayuStatus(types_1.PayuStatus.NOT_EXISTS))];
+                    return [4 /*yield*/, dispatch(payu_actions_1.PayuActions.setPayuStatus(types_1.PayuStatus.PENDING))];
                 case 4:
                     _a.sent();
                     return [4 /*yield*/, dispatch(payu_actions_1.PayuActions.setDotpayOrderNumber(lastOrderId))];

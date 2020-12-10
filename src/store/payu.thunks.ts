@@ -21,7 +21,7 @@ export namespace PayuThunks {
             if (typeof response.result === 'string') {
                 const url = response.result;
                 await dispatch(PayuActions.setPayuUrl(url));
-                await dispatch(PayuActions.setPayuStatus(PayuStatus.NOT_EXISTS));
+                await dispatch(PayuActions.setPayuStatus(PayuStatus.PENDING));
                 await dispatch(PayuActions.setDotpayOrderNumber(lastOrderId));
                 await StorageManager.getInstance().get(StorageCollection.ORDERS).setItem('last_payu_payment', getState().payu);
 
