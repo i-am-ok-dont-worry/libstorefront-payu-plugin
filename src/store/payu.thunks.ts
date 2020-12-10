@@ -16,7 +16,7 @@ export namespace PayuThunks {
     export const getPayuUrl = (orderId: string) => async (dispatch, getState) => {
         try {
             const response = await IOCContainer.get(PayuDao).getPayuUrl(orderId);
-            const lastOrderId = await IOCContainer.get(AbstractStore).getState().order.last_order_confirmation.confirmation.magentoOrderId;
+            const lastOrderId = await IOCContainer.get(AbstractStore).getState().order.last_order_confirmation.confirmation.orderNumber;
 
             if (typeof response.result === 'string') {
                 const url = response.result;
