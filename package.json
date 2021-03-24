@@ -1,6 +1,6 @@
 {
   "name": "@grupakmk/libstorefront-payu-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin for one-click PayU payment",
   "main": "index.js",
   "scripts": {
